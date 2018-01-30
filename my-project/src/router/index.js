@@ -23,21 +23,22 @@ export default new Router({
         {
           path: 'index',
           component: index,
+          redirect: '/index/recommend',
           children: [
             {
               path: 'recommend',
               component: recommend
             },
             {
-              path: 'furniture',
+              path: '/index/furniture',
               component: furniture
             },
             {
-              path: 'home',
+              path: '/index/home',
               component: home
             },
             {
-              path: 'activity',
+              path: '/index/activity',
               component: activity
             }
           ]

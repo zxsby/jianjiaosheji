@@ -4,10 +4,17 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueCarbon from 'vue-carbon'
+import axios from 'axios'
 import 'vue-carbon/dist/vue-carbon.css'
 import './assets/css/iconfont.styl'
+import VueLazyload from 'vue-lazyload'
 
+Vue.use(VueLazyload, {
+  error: require('./common/image/error.png'),
+  loading: require('./common/image/loading.gif')
+})
 Vue.use(VueCarbon)
+Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

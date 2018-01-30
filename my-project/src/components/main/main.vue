@@ -1,9 +1,11 @@
 <template>
-  <div>
+  <div class="main-wrapper">
     <Hd :title="title"></Hd>
-    <transition name="fold" mode="out-in">
-      <router-view></router-view>
-    </transition>
+    <div class="">
+      <transition name="fold" mode="out-in">
+        <router-view></router-view>
+      </transition>
+    </div>
     <div class="footer">
       <router-link @click.native="jump('index')" to="/index/recommend" replace class="footer-tab" tag="div">
         <i class="iconfont icon-icon-"></i>
@@ -50,7 +52,7 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
   .fold-enter-active, .fold-leave-active
-    transition: all 0.5s linear
+    transition: all 0.4s linear
     transform: translate3d(0%, 0, 0)
 
   .fold-enter
@@ -59,32 +61,39 @@
     opacity: 0
 
   .fold-leave-to
-    transition: all 0.5s linear
+    transition: all 0.4s linear
     transform: translate3d(-100%, 0, 0)
     opacity: 0
 
-  .footer
-    position: fixed
-    left: 0
-    bottom: 0
-    right: 0
-    display: flex
-    font-size: 0
-    height: 50px
-    text-align: center
-    border-top: 1px solid #f0f0f0
-    .footer-tab
-      flex: 1
-      padding-top: 8px
-      color: #7a7a7a
-      &.router-link-active
-        color: red
-        font-weight: 700
-      .iconfont
-        display: inline-block
-        font-size: 20px
-        margin-bottom: 4px
-      p
-        font-size: 10px
-        margin-top: 0
+  .main-wrapper
+    /*.wrapper*/
+      /*position: fixed*/
+      /*top: 84px*/
+      /*right: 0*/
+      /*left: 0*/
+      /*bottom: 50px*/
+    .footer
+      position: fixed
+      left: 0
+      bottom: 0
+      right: 0
+      display: flex
+      font-size: 0
+      height: 50px
+      text-align: center
+      border-top: 1px solid #f0f0f0
+      .footer-tab
+        flex: 1
+        padding-top: 8px
+        color: #7a7a7a
+        &.router-link-active
+          color: red
+          font-weight: 700
+        .iconfont
+          display: inline-block
+          font-size: 20px
+          margin-bottom: 4px
+        p
+          font-size: 10px
+          margin-top: 0
 </style>

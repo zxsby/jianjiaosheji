@@ -7,10 +7,18 @@ const baseWebpackConfig = require('./webpack.base.conf')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
+const express = require('express')
+const axios = require('axios')
+const app = express()
+let apiRoutes = express.Router()
+app.use('/api', apiRoutes)
+let appData = require('../data.json')
+let recommend = appData.recommend
+
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
-    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
+    rules: utils.styleLoaders({sourceMap: config.dev.cssSourceMap, usePostCSS: true})
   },
   // cheap-module-eval-source-map is faster for development
   devtool: config.dev.devtool,
@@ -21,8 +29,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     historyApiFallback: true,
     hot: true,
     compress: true,
-    host: process.env.HOST || config.dev.host,
-    port: process.env.PORT || config.dev.port,
+    host: process.env.HOST || config.dev.host,
+    port: process.env.PORT || config.dev.port,
     open: config.dev.autoOpenBrowser,
     overlay: config.dev.errorOverlay ? {
       warnings: false,
@@ -33,7 +41,61 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,
-    }
+    },
+    before(app) {
+      app.get('/api/recommend', (req, res) => {
+        // res.json(recommend)
+        axios.get('https://m.wowdsgn.com/v2/page?pageId=1&tabId=1&_=1517196246075', {
+          headers: {
+            referer: 'https://m.wowdsgn.com/',
+            host: 'm.wowdsgn.com'
+          }
+        }).then((response) => {
+          res.json(response.data)
+        }).catch((err) => {
+          console.log(err)
+        })
+      })
+      app.get('/api/furniture', (req, res) => {
+        // res.json(recommend)
+        axios.get('https://m.wowdsgn.com/v2/page?pageId=1&tabId=10005&_=1517213531805', {
+          headers: {
+            referer: 'https://m.wowdsgn.com/',
+            host: 'm.wowdsgn.com'
+          }
+        }).then((response) => {
+          res.json(response.data)
+        }).catch((err) => {
+          console.log(err)
+        })
+      })
+      app.get('/api/home', (req, res) => {
+        // res.json(recommend)
+        axios.get('https://m.wowdsgn.com/v2/page?pageId=1&tabId=10006&_=1517288480575', {
+          headers: {
+            referer: 'https://m.wowdsgn.com/',
+            host: 'm.wowdsgn.com'
+          }
+        }).then((response) => {
+          res.json(response.data)
+        }).catch((err) => {
+          console.log(err)
+        })
+      })
+      app.get('/api/activity', (req, res) => {
+        // res.json(recommend)
+        axios.get('https://m.wowdsgn.com/v2/page?pageId=1&tabId=10010&_=1517290711784', {
+          headers: {
+            referer: 'https://m.wowdsgn.com/',
+            host: 'm.wowdsgn.com'
+          }
+        }).then((response) => {
+          res.json(response.data)
+        }).catch((err) => {
+          console.log(err)
+        })
+      })
+    },
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -68,8 +130,8 @@ module.exports = new Promise((resolve, reject) => {
           messages: [`Your application is running here: http://${config.dev.host}:${port}`],
         },
         onErrors: config.dev.notifyOnErrors
-        ? utils.createNotifierCallback()
-        : undefined
+          ? utils.createNotifierCallback()
+          : undefined
       }))
 
       resolve(devWebpackConfig)

@@ -1,15 +1,17 @@
 <template>
   <div id="app">
-    <router-view/>
+    <keep-alive>
+      <router-view/>
+    </keep-alive>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'app'
-}
+  export default {
+    name: 'app'
+  }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-
+  @import 'common/stylus/reset.styl'
 </style>
