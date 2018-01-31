@@ -17,7 +17,7 @@
       </div>
       <keep-alive>
         <div class="index-wrapper">
-          <transition name="fold1" mode="out-in">
+          <transition name="fold" mode="out-in">
             <router-view></router-view>
           </transition>
         </div>
@@ -41,16 +41,16 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  .fold1-enter-active, .fold1-leave-active
+  .fold-enter-active, .fold-leave-active
     transition: all 0.4s linear
     transform: translate3d(0%, 0, 0)
 
-  .fold1-enter
+  .fold-enter
     transition: all 0s linear
     transform: translate3d(100%, 0, 0)
     opacity: 0
 
-  .fold1-leave-to
+  .fold-leave-to
     transition: all 0s linear
     transform: translate3d(-100%, 0, 0)
     opacity: 0

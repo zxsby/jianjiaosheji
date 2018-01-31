@@ -78,8 +78,7 @@
           bounce: true,
           snap: {
             loop: this.loop
-          },
-          click: true
+          }
         })
 //   监听滚动完毕 修改currentIndex
         this.slider.on('scrollEnd', () => {

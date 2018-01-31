@@ -1,7 +1,7 @@
 <template>
   <div class="main-wrapper">
     <Hd :title="title"></Hd>
-    <div class="">
+    <div class="main-content">
       <transition name="fold" mode="out-in">
         <router-view></router-view>
       </transition>
@@ -66,12 +66,15 @@
     opacity: 0
 
   .main-wrapper
+    .main-content
+      position: relative
+      z-index:1
     /*.wrapper*/
-      /*position: fixed*/
-      /*top: 84px*/
-      /*right: 0*/
-      /*left: 0*/
-      /*bottom: 50px*/
+    /*position: fixed*/
+    /*top: 84px*/
+    /*right: 0*/
+    /*left: 0*/
+    /*bottom: 50px*/
     .footer
       position: fixed
       left: 0

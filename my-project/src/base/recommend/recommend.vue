@@ -1,9 +1,9 @@
 <template>
   <div class="content">
     <h1 class="title">{{recommend.moduleName}}</h1>
-    <img @load="imageLoad" class="image" :src="recommend.moduleContent.banners[0].bannerImgSrc">
+    <img @click="goTOProductGroup(recommend.moduleContent.banners[0].bannerLinkTargetId,recommend.moduleContent.banners[0].bannerLinkType)"  @load="imageLoad" class="image" :src="recommend.moduleContent.banners[0].bannerImgSrc">
     <div class="wrapper">
-      <div class="detail" v-for="(item,index) in recommend.moduleContent.products" v-if="index<3">
+      <div @click="goToDetail(item.productId)" class="detail" v-for="(item,index) in recommend.moduleContent.products" v-if="index<3">
         <img width="110" height="110" v-lazy="item.productImg">
         <p class="productTitle">{{item.productTitle}}</p>
         <p class="sellPrice">￥{{item.sellPrice | money}}<span v-if="item.sellPrice !== item.originalPrice">￥{{item.originalPrice | money}}</span></p>
@@ -13,9 +13,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {computedPrice} from '../../common/js/mixin'
+  import {computedPrice, goToDetail, goTOProductGroup} from '../../common/js/mixin'
   export default {
-    mixins: [computedPrice],
+    mixins: [computedPrice, goToDetail, goTOProductGroup],
     props: {
       recommend: {
         type: Object

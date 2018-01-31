@@ -42,3 +42,29 @@ export const loadImage = {
     }
   }
 }
+
+export const goTOProductGroup = {
+  methods: {
+    // 跳转到 productGroup 或者 toPic
+    goTOProductGroup (bannerLinkTargetId, bannerLinkType) {
+      console.log(1111111)
+      if (!bannerLinkTargetId) {
+        return
+      }
+      if (bannerLinkType === 10) {
+        this.$router.push(`/productGroup/${bannerLinkTargetId}`)
+      }
+      if (bannerLinkType === 8) {
+        this.$router.push(`/toPic/${bannerLinkTargetId}`)
+      }
+    }
+  }
+}
+
+export const goToDetail = {
+  methods: {
+    goToDetail (productId) {
+      this.$router.push(`/productDetails/${productId}`)
+    }
+  }
+}

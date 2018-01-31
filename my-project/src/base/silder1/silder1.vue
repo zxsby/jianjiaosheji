@@ -3,7 +3,7 @@
     <h1 class="title">{{listDetail.moduleContent.name}}</h1>
     <div class="list-wrapper" ref="list">
       <ul class="wrapper" ref="wrapper">
-        <li class="item" v-for="item in listDetail.moduleContent.products">
+        <li @click="goToDetail(item.productId)" class="item" v-for="item in listDetail.moduleContent.products">
           <img width="110" height="110" v-lazy="item.productImg">
           <p class="productTitle">{{item.productTitle}}</p>
           <p class="sellPrice">￥{{item.sellPrice | money}}<span
@@ -22,9 +22,9 @@
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll'
-  import {computedPrice} from '../../common/js/mixin'
+  import {computedPrice, goToDetail} from '../../common/js/mixin'
   export default {
-    mixins: [computedPrice],
+    mixins: [computedPrice, goToDetail],
     props: {
       listDetail: {
         type: Object

@@ -10,6 +10,9 @@ import recommend from '../components/index/recommend/recommend.vue'
 import furniture from '../components/index/furniture/furniture.vue'
 import home from '../components/index/home/home.vue'
 import activity from '../components/index/activity/activity.vue'
+import productGroup from '../base/productGroup/productGroup.vue'
+import toPic from '../base/toPic/toPic.vue'
+import productDetails from '../base/productDetails/productDetails.vue'
 
 Vue.use(Router)
 
@@ -60,6 +63,21 @@ export default new Router({
           component: user
         }
       ]
+    },
+    {
+      path: '/productGroup/:id',
+      component: productGroup,
+      props: true
+    },
+    {
+      path: '/toPic/:id',
+      component: toPic,
+      props: true
+    },
+    {
+      path: '/productDetails/:id',
+      component: productDetails,
+      props: true
     }
   ]
 })

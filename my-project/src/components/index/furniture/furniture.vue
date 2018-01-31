@@ -5,7 +5,7 @@
             :listenScroll="true" ref="scroll" class="furniture-content">
       <div v-if="Furniture.length">
         <Silder>
-          <div v-for="item in Furniture[0].moduleContent.banners">
+          <div @click.stop="goTOProductGroup(item.bannerLinkTargetId,item.bannerLinkType)" v-for="item in Furniture[0].moduleContent.banners">
             <img @load="loadImage" :src="item.bannerImgSrc" alt="">
           </div>
         </Silder>
@@ -38,10 +38,10 @@
   import SmallList from '../../../base/smallList/smallList.vue'
   import MiddleList from '../../../base/middleList/middleList.vue'
   import Loading from '../../../base/loading/loading.vue'
-  import {loadImage} from '../../../common/js/mixin'
+  import {loadImage, goTOProductGroup} from '../../../common/js/mixin'
   const ERR_OK = '0'
   export default {
-    mixins: [loadImage],
+    mixins: [loadImage, goTOProductGroup],
     data () {
       return {
         Furniture: [],

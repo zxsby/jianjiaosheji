@@ -39,8 +39,11 @@
         type: Boolean,
         default: false
       },
+      pullup: {
+        type: Boolean,
+        default: false
+      },
       data: {
-        type: Array,
         default: null
       }
     },
@@ -75,10 +78,18 @@
           })
         }
         //  监听抬起事件
-        if (!this.touch) {
+        if (this.touch) {
           this.scroll.on('touchEnd', (pos) => {
             if (pos.y > 50) {
               this.$emit('touchEnd', pos)
+            }
+          })
+        }
+        //  监听滚动结束事件
+        if (this.pullup) {
+          this.scroll.on('scrollEnd', (el) => {
+            if (el.y <= this.scroll.maxScrollY + 50) {
+              this.$emit('scrollToEnd')
             }
           })
         }
