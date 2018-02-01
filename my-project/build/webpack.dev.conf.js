@@ -210,15 +210,19 @@ const devWebpackConfig = merge(baseWebpackConfig, {
                 output.resCode = Code
                 res.json(output)
               }).catch((err) => {
+                Code = 1
                 console.log(err)
               })
             }).catch((err) => {
+              Code = 1
               console.log(err)
             })
           }).catch((err) => {
+            Code = 1
             console.log(err)
           })
         }).catch((err) => {
+          Code = 1
           console.log(err)
         })
       })

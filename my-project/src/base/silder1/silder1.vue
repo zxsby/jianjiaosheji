@@ -14,7 +14,7 @@
         </li>
       </ul>
     </div>
-    <div class="more">
+    <div @click="goTOProductGroup(listDetail.moduleContent.id,10)" class="more">
       查看更多 ▶
     </div>
   </div>
@@ -22,9 +22,9 @@
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll'
-  import {computedPrice, goToDetail} from '../../common/js/mixin'
+  import {computedPrice, goToDetail, goTOProductGroup} from '../../common/js/mixin'
   export default {
-    mixins: [computedPrice, goToDetail],
+    mixins: [computedPrice, goToDetail, goTOProductGroup],
     props: {
       listDetail: {
         type: Object

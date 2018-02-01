@@ -47,7 +47,7 @@ export const goTOProductGroup = {
   methods: {
     // 跳转到 productGroup 或者 toPic
     goTOProductGroup (bannerLinkTargetId, bannerLinkType) {
-      console.log(1111111)
+      console.log(bannerLinkTargetId, bannerLinkType)
       if (!bannerLinkTargetId) {
         return
       }
