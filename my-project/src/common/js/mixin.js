@@ -1,3 +1,5 @@
+import {mapGetters, mapActions} from 'vuex'
+
 export const computedPrice = {
   filters: {
     // 货币转换过滤器
@@ -61,10 +63,41 @@ export const goTOProductGroup = {
   }
 }
 
+// 跳转到详情
 export const goToDetail = {
   methods: {
     goToDetail (productId) {
       this.$router.push(`/productDetails/${productId}`)
     }
+  }
+}
+
+//  商品收藏
+export const productCollect = {
+  computed: {
+    ...mapGetters([
+      'getCart',
+      'getProductCollect'
+    ])
+  },
+  methods: {
+    // 验证是否收藏
+    checkedProductCollect (detail) {
+      let index = this.getProductCollect.findIndex((item) => {
+        return item.parentProductId === detail.parentProductId
+      })
+      if (index >= 0) {
+        return 'red'
+      } else {
+        return 'black'
+      }
+    },
+    //  添加商品收藏
+    joinProductCollect (detail) {
+      this.joinPcl(detail)
+    },
+    ...mapActions([
+      'joinPcl'
+    ])
   }
 }

@@ -2,10 +2,10 @@
   <transition name="fold" mode="out-in">
     <div class="recommend">
       <toTop @scrolltoTop="scrollTOTOP" ref="totop"></toTop>
-      <Scroll @touchEnd="touchEnd" @scroll="scroll" :touch="true" :interactive="true" class="main-content"
+      <Scroll v-if="firstLunBo.length" @touchEnd="touchEnd" @scroll="scroll" :touch="true" :interactive="true" class="main-content"
               :probeType="2"
               :listenScroll="true" :data="RecommendMsg" ref="scroll">
-        <div v-if="firstLunBo.length">
+        <div >
           <Silder>
             <div @click.stop="goTOProductGroup(item.bannerLinkTargetId,item.bannerLinkType)" v-for="item in firstLunBo">
               <img @load="loadImage" :src="item.bannerImgSrc" alt="">

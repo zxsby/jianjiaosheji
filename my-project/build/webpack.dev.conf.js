@@ -164,6 +164,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         var mainUrl = `https://mobile-api.wowdsgn.com/v3/products/${req.query.id}`  //  主要数据
         var imgUrl = `https://mobile-api.wowdsgn.com/v1/products/${req.query.id}/detail`  //  图片详情
         var comment = `https://mobile-api.wowdsgn.com/v1/product/comments/list?paramJson={%22productId%22:${req.query.id},%22currentPage%22:1,%22pageSize%22:4}`  //  评论信息
+        var cartDetail = `https://mobile-api.wowdsgn.com/v2/product/spec?paramJson={%22productId%22:${req.query.id}}`
         var recommend = `https://mobile-api.wowdsgn.com/v2/products/${req.query.id}/related`  //  相关推荐大家都在看
         var output = {}
         var Code = 1 //  成功失败码
@@ -207,8 +208,22 @@ const devWebpackConfig = merge(baseWebpackConfig, {
                   Code = 0
                   output.recommendMsg = response.data.data
                 }
-                output.resCode = Code
-                res.json(output)
+                axios.get(cartDetail, {
+                  headers: {
+                    Connection: 'Keep-Alive',
+                    Host: 'mobile-api.wowdsgn.com'
+                  }
+                }).then((response) => {
+                  if (response.data.resCode === '0') {
+                    Code = 0
+                    output.cartDetail = response.data.data
+                  }
+                  output.resCode = Code
+                  res.json(output)
+                }).catch((err) => {
+                  Code = 1
+                  console.log(err)
+                })
               }).catch((err) => {
                 Code = 1
                 console.log(err)
