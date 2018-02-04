@@ -1,9 +1,9 @@
 <template>
   <div>
     <toTop @scrolltoTop="scrollTOTOP" ref="totop"></toTop>
-    <Scroll @touchEnd="touchEnd" @scroll="scroll" :touch="true" :interactive="true" :data="activity" :probeType="2"
+    <Scroll v-if="activity.length" @touchEnd="touchEnd" @scroll="scroll" :touch="true" :interactive="true" :data="activity" :probeType="2"
             :listenScroll="true" ref="scroll" class="furniture-content">
-      <div v-if="activity.length">
+      <div >
         <Silder>
           <div @click.stop="goTOProductGroup(item.bannerLinkTargetId,item.bannerLinkType)" v-for="item in activity[0].moduleContent.banners">
             <img @load="loadImage" :src="item.bannerImgSrc" alt="">

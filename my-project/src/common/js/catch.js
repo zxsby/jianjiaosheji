@@ -13,7 +13,7 @@ function inscrtCart(arr, val, compare) {
   if (index >= 0) {
     arr[index].count += val.count
   } else {
-    arr.push(val)
+    arr.unshift(val)
   }
 }
 //  添加购物车保存到本地
@@ -55,4 +55,32 @@ export function joinProductCollect(query) {
 
 export function loadProductCollect() {
   return stroage.get(PRODUCT_COLLECT, [])
+}
+
+//  修改购物车
+
+// export function changeCartList(arrList) {
+//   let cartList = stroage.get(CART_LEY, [])
+//   for (let i = 0; i < arrList.length; i++) {
+//     let index = cartList.findIndex((item) => {
+//       return item.detail.productId === arrList[i].productId
+//     })
+//     if (arrList[i].count === 0) {
+//       cartList.splice(index, 1)
+//     } else {
+//       cartList[index].count = arrList[i].count
+//     }
+//   }
+//   stroage.set(CART_LEY, cartList)
+//   return cartList
+// }
+
+export function changeCartList(product) {
+  let cartList = stroage.get(CART_LEY, [])
+  let index = cartList.findIndex((item) => {
+    return item.detail.productId === product.productId
+  })
+  cartList[index].count = product.count
+  stroage.set(CART_LEY, cartList)
+  return cartList
 }

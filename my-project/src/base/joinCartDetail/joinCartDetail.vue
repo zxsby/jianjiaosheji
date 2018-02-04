@@ -134,6 +134,7 @@
         cart.detail = this.cartDetail.products[this.defaultChecked]
         cart.count = this.count
         this.joinToCart(cart)
+        this.hideDetail()
       },
       ...mapActions([
         'joinToCart'

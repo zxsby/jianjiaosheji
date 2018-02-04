@@ -101,3 +101,18 @@ export const productCollect = {
     ])
   }
 }
+
+// 获取购物车数据
+
+export const getCartList = {
+  computed: {
+    ...mapGetters([
+      'getCart'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'changeCartDetailCount'
+    ])
+  }
+}

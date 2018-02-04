@@ -6,7 +6,7 @@
         <p class="goToBack" @click="goToBack"><</p>
         <p class="iconfont ">转发</p>
       </div>
-      <Scroll  v-if="productDetails.mainMsg" @touchEnd="touchEnd" :touch="true"
+      <Scroll v-if="productDetails.mainMsg" @touchEnd="touchEnd" :touch="true"
               :interactive="true" class="main-content" :probeType="2"
               :listenScroll="true" :data="productDetails" ref="scroll">
         <div class="productDetails-content" v-if="productDetails.mainMsg">
@@ -144,7 +144,7 @@
             <i @click="joinProductCollect(productDetails.mainMsg)"
                :class="checkedProductCollect(productDetails.mainMsg)" class="heart">♡</i>
           </div>
-          <div class="join-hart">
+          <div class="join-hart" @click="goToCart">
             <i class="iconfont icon-gouwuche">
               <i class="count-num" v-show="getCart.length > 0">{{getCart.length}}</i>
             </i>
@@ -210,6 +210,11 @@
           console.log(err)
         })
       },
+      //  路由变化时重新获取数据
+      _getProductGroupAgain () {
+        this._getProductGroup()
+        this.scrollTOTOP()
+      },
       //  返回上一页
       goToBack () {
         this.$router.back(-1)
@@ -228,6 +233,10 @@
         this.productDetails.mainMsg.productImg = val.productImg
         this.productDetails.mainMsg.sellPrice = val.sellPrice
         this.productDetails.mainMsg.originalPrice = val.originalPrice
+      },
+      // 跳转到购物车页面
+      goToCart () {
+        this.$router.push(`/cart`)
       }
     },
     watch: {
@@ -249,7 +258,8 @@
             }, 20)
           }
         }
-      }
+      },
+      '$route': '_getProductGroupAgain'
     },
     components: {
       Scroll,

@@ -13,6 +13,7 @@ import activity from '../components/index/activity/activity.vue'
 import productGroup from '../base/productGroup/productGroup.vue'
 import toPic from '../base/toPic/toPic.vue'
 import productDetails from '../base/productDetails/productDetails.vue'
+import shoppingCart from '../components/shoppingCart/shoppingCart.vue'
 
 Vue.use(Router)
 
@@ -78,6 +79,10 @@ export default new Router({
       path: '/productDetails/:id',
       component: productDetails,
       props: true
+    },
+    {
+      path: '/cart',
+      component: shoppingCart
     }
   ]
 })

@@ -2,9 +2,9 @@
   <transition name="fold" mode="out-in">
   <div>
     <toTop @scrolltoTop="scrollTOTOP" ref="totop"></toTop>
-    <Scroll @touchEnd="touchEnd" @scroll="scroll" :touch="true" :interactive="true" :data="home" :probeType="2"
+    <Scroll v-if="home.length" @touchEnd="touchEnd" @scroll="scroll" :touch="true" :interactive="true" :data="home" :probeType="2"
             :listenScroll="true" ref="scroll" class="furniture-content">
-      <div v-if="home.length">
+      <div >
         <Silder>
           <div @click.stop="goTOProductGroup(item.bannerLinkTargetId,item.bannerLinkType)" v-for="item in home[0].moduleContent.banners">
             <img @load="loadImage" :src="item.bannerImgSrc" alt="">

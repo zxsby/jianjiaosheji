@@ -4,7 +4,9 @@
       <toTop @scrolltoTop="scrollTOTOP" ref="totop" top="45px"></toTop>
       <div class="back">
         <p class="goToBack" @click="goToBack"><</p>
-        <p class="iconfont icon-gouwuche"></p>
+        <p class="iconfont icon-gouwuche">
+          <i class="count-num" v-show="getCart.length > 0">{{getCart.length}}</i>
+        </p>
       </div>
       <Scroll v-if="toPic.data && toPic.data1" @touchEnd="touchEnd" @scroll="scroll" :touch="true"
               :interactive="true" class="main-content" :probeType="2"
@@ -117,20 +119,36 @@
       overflow: hidden
       .goToBack, .iconfont
         display: inline-block
-        width: 35px
-        height: 35px
+        width: 40px
+        height: 40px
         border-radius: 50%
         background: rgba(0, 0, 0, 0.3)
         text-align: center
         font-size: 30px
-        line-height: 27px
+        line-height: 32px
         font-weight: 400
         color: white
       .iconfont
         float: right
         font-size: 25px
-        line-height: 35px
+        line-height: 40px
         font-weight: 100
+        &.icon-gouwuche
+          position: relative
+          .count-num
+            position: absolute
+            top: -1px
+            right: 2px
+            width: 15px
+            height: 15px
+            line-height: 15px
+            text-align: center
+            border-radius: 50%
+            font-size: 6px
+            font-weight: 700
+            color: #000
+            background: #FFD444
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .4)
 
     .main-content
       position: fixed
