@@ -27,10 +27,10 @@
         <Split></Split>
         </div>
       </div>
-      <div v-show="!activity.length" class="loading">
-        <Loading></Loading>
-      </div>
     </Scroll>
+    <div v-show="!activity.length" class="loading">
+      <Loading></Loading>
+    </div>
   </div>
 </template>
 
@@ -96,7 +96,7 @@
     overflow: hidden
     .image
       width: 100%
-    .loading
+  .loading
       position: absolute
       width: 100%
       top: 50%

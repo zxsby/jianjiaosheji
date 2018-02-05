@@ -1,6 +1,6 @@
 <template>
   <div class="header-content">
-    <i class="iconfont icon-sousuo"></i>
+    <i @click="goToSearch" class="iconfont icon-sousuo"></i>
     <span>{{title}}</span>
     <i @click="goToCart" class="iconfont icon-gouwuche">
       <i class="count-num" v-show="getCart.length > 0">{{getCart.length}}</i>
@@ -20,6 +20,9 @@
     methods: {
       goToCart () {
         this.$router.push('/cart')
+      },
+      goToSearch () {
+        this.$router.push('/search')
       }
     }
   }

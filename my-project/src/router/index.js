@@ -14,6 +14,7 @@ import productGroup from '../base/productGroup/productGroup.vue'
 import toPic from '../base/toPic/toPic.vue'
 import productDetails from '../base/productDetails/productDetails.vue'
 import shoppingCart from '../components/shoppingCart/shoppingCart.vue'
+import search from '../components/search/search.vue'
 
 Vue.use(Router)
 
@@ -83,6 +84,10 @@ export default new Router({
     {
       path: '/cart',
       component: shoppingCart
+    },
+    {
+      path: '/search',
+      component: search
     }
   ]
 })

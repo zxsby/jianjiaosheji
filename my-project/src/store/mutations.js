@@ -5,6 +5,9 @@ const mtutaions = {
   },
   [types.SET_PRODUCT_COLLECT] (state, collect) {
     state.productCollect = collect
+  },
+  [types.SET_SEARCH_HISTORY] (state, history) {
+    state.history = history
   }
 }
 

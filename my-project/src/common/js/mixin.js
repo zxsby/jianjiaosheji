@@ -84,7 +84,7 @@ export const productCollect = {
     // 验证是否收藏
     checkedProductCollect (detail) {
       let index = this.getProductCollect.findIndex((item) => {
-        return item.parentProductId === detail.parentProductId
+        return item.productId === detail.productId
       })
       if (index >= 0) {
         return 'red'
@@ -112,7 +112,8 @@ export const getCartList = {
   },
   methods: {
     ...mapActions([
-      'changeCartDetailCount'
+      'changeCartDetailCount',
+      'detailCartItem'
     ])
   }
 }

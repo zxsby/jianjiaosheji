@@ -22,10 +22,10 @@
           <Split></Split>
         </div>
       </div>
-      <div v-show="!home.length" class="loading">
-        <Loading></Loading>
-      </div>
     </Scroll>
+    <div v-show="!home.length" class="loading">
+      <Loading></Loading>
+    </div>
   </div>
   </transition>
 </template>
@@ -102,9 +102,9 @@
     left: 0
     bottom: 50px
     overflow: hidden
-    .loading
-      position: absolute
-      width: 100%
-      top: 50%
-      transform: translateY(-50%)
+  .loading
+    position: absolute
+    width: 100%
+    top: 50%
+    transform: translateY(-50%)
 </style>

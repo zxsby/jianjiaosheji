@@ -88,7 +88,7 @@
         .image
           width: 100%
         .discount, .otherDiscount
-          margin: 0 15px 10px
+          margin: 10px 15px 10px
           font-size: 12px
           color: white
           span
@@ -99,7 +99,7 @@
             padding: 2px 6px
             background: black
         .noDiscount
-          height: 24px
+          height: 34px
         .name
           overflow: hidden
           text-overflow: ellipsis

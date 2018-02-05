@@ -131,7 +131,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       // 获取toPic页面数据先获取详细数据后是图片数据，组合后返回
       app.get('/api/toPic', (req, res) => {
         // res.json(recommend)
-        console.log(req.query)
         var imgUrl = `https://mobile-api.wowdsgn.com/v3/topic?paramJson={%22topicId%22:${req.query.id}}`
         var url = `https://mobile-api.wowdsgn.com/v2/topic/product?paramJson={%22topicId%22:${req.query.id}}`
         var output = ''
@@ -238,6 +237,36 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           })
         }).catch((err) => {
           Code = 1
+          console.log(err)
+        })
+      })
+      // 获取热门搜索数据
+      app.get('/api/hot', (req, res) => {
+        let hotUrl = 'https://mobile-api.wowdsgn.com/v1/product/search/hot-keywords'
+        axios.get(hotUrl, {
+          headers: {
+            Connection: 'Keep-Alive',
+            Host: 'mobile-api.wowdsgn.com'
+          }
+        }).then((result) => {
+          res.json(result.data)
+        }).catch((err) => {
+          console.log(err)
+        })
+      })
+      // 获取搜索数据
+      app.get('/api/search', (req, res) => {
+        // let searchUrl = `https://mobile-api.wowdsgn.com/v1/product/search?paramJson={%22order%22:%22asc%22,%22keyword%22:${req.query.txt},%22pageSize%22:30,%22currentPage%22:${req.query.currentPage},%22sort%22:%22onShelfTime%22}`
+        let searchUrl = `https://mobile-api.wowdsgn.com/v1/product/search?paramJson={%22order%22:${encodeURI(req.query.order)},%22keyword%22:${encodeURI(req.query.txt)},%22pageSize%22:30,%22currentPage%22:${req.query.currentPage},%22sort%22:${encodeURI(req.query.sort)}}`
+        console.log(searchUrl)
+        axios.get(searchUrl, {
+          headers: {
+            Connection: 'Keep-Alive',
+            Host: 'mobile-api.wowdsgn.com'
+          }
+        }).then((result) => {
+          res.json(result.data)
+        }).catch((err) => {
           console.log(err)
         })
       })

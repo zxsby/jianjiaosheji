@@ -3,7 +3,8 @@
     <div class="cart-header">
       <p class="cart-back" @click="goTOBack"><</p>
       <p class="cart-header-title">购物车</p>
-      <p class="cart-header-click">编辑</p>
+      <p @click="detail=!detail" v-if="!detail" class="cart-header-click">编辑</p>
+      <p @click="detail=!detail" v-if="detail" class="cart-header-click">完成</p>
     </div>
     <scroll v-if="getCart" @touchEnd="touchEnd" :touch="true"
             :interactive="true" :probeType="2"
@@ -40,8 +41,11 @@
         <span v-show="allChecked">✔</span>
       </span>
       <span>全选</span>
-      <p class="cart-footer-right">去结算</p>
-      <p class="cart-footer-center">合计
+      <p @click="detailChecked" class="cart-footer-right" :style="{background: detail ? 'black' : 'yellow' }">
+        <span v-show="!detail">去结算</span>
+        <span class="detail" v-show="detail">删除</span>
+      </p>
+      <p v-show="!detail" class="cart-footer-center">合计
         <span>￥{{computedAllPrice | money}}</span>
       </p>
     </div>
@@ -57,24 +61,23 @@
     data () {
       return {
         check: [],
-        all: false
+        detail: false
+      }
+    },
+    mounted () {
+      for (let i = 0; i < this.getCart.length; i++) {
+        this.check.push(true)
       }
     },
     computed: {
       // 全选状态关联
       allChecked: function () {
-        // let all = false
-        for (let i = 0; i < this.check.length; i++) {
-          if (i !== this.check.length - 1) {
-            if (this.check[i] === this.check[i + 1] && this.check[i] !== false) {
-              this.all = true
-            } else {
-              this.all = false
-            }
-          }
-        }
+        let all = this.check.every((val, i, arr) => {
+          return arr[i] === true
+        })
+        console.log(all, this.check.length === this.getCart.length)
         // console.log(this.check.length === this.getCart.length, this.all, this.check)
-        return this.check.length === this.getCart.length && this.all
+        return this.check.length === this.getCart.length && all
       },
       //  计算价格总和
       computedAllPrice: function () {
@@ -124,6 +127,17 @@
             this.changeCartDetailCount(obj)
           }
         }
+      },
+      // 删除选中的商品
+      detailChecked () {
+        let detailIndex = []
+        for (let index in this.check) {
+          if (this.check[index]) {
+            detailIndex.push(this.getCart[index].detail.productId)
+            this.check.splice(index, 1)
+          }
+        }
+        this.detailCartItem(detailIndex)
       }
     },
     components: {
@@ -247,6 +261,8 @@
         height: 50px
         background: yellow
         text-align: center
+        .detail
+          color: white
       .cart-footer-center
         span
           display: inline-block

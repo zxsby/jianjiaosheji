@@ -39,10 +39,10 @@
             </div>
           </div>
         </div>
-        <div v-show="!toPic.data" class="loading">
-          <Loading></Loading>
-        </div>
       </Scroll>
+      <div v-show="!toPic.data" class="loading">
+        <Loading></Loading>
+      </div>
     </div>
   </transition>
 </template>
@@ -149,7 +149,11 @@
             color: #000
             background: #FFD444
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .4)
-
+    .loading
+      position: absolute
+      width: 100%
+      top: 50%
+      transform: translateY(-50%)
     .main-content
       position: fixed
       top: 0
@@ -157,11 +161,6 @@
       left: 0
       bottom: 0
       overflow: hidden
-      .loading
-        position: absolute
-        width: 100%
-        top: 50%
-        transform: translateY(-50%)
       .image
         width: 100%
       .toPic-content

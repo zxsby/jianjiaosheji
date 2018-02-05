@@ -21,10 +21,10 @@
           <Split></Split>
         </div>
       </div>
-      <div v-show="!FurnitureList.length" class="loading">
-        <Loading></Loading>
-      </div>
     </Scroll>
+    <div v-show="!FurnitureList.length" class="loading">
+      <Loading></Loading>
+    </div>
   </div>
 </template>
 
@@ -88,7 +88,7 @@
     left: 0
     bottom: 50px
     overflow: hidden
-    .loading
+  .loading
       position: absolute
       width: 100%
       top: 50%

@@ -134,10 +134,10 @@
           </div>
           <split></split>
         </div>
-        <div v-show="!productDetails.mainMsg" class="loading">
-          <Loading></Loading>
-        </div>
       </Scroll>
+      <div v-show="!productDetails.mainMsg" class="loading">
+        <Loading></Loading>
+      </div>
       <div v-if="productDetails.mainMsg" class="cart-content">
         <div class="cart-bottom showCart">
           <div class="join-hart">
@@ -551,7 +551,7 @@
             color: red
           .help-image
             float: right
-      .loading
+    .loading
         position: absolute
         width: 100%
         top: 50%

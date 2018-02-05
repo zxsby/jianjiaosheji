@@ -1,8 +1,9 @@
-import {loadCart, loadProductCollect} from '../common/js/catch'
+import {loadCart, loadProductCollect, loadSearchHistory} from '../common/js/catch'
 
 const state = {
   cart: loadCart(),
-  productCollect: loadProductCollect()
+  productCollect: loadProductCollect(),
+  history: loadSearchHistory()
 }
 
 export default state

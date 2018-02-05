@@ -26,10 +26,10 @@
                alt="">
           <Split></Split>
         </div>
-        <div v-show="!RecommendMsg.length" class="loading">
-          <Loading></Loading>
-        </div>
       </Scroll>
+      <div v-show="!RecommendMsg.length" class="loading">
+        <Loading></Loading>
+      </div>
     </div>
   </transition>
 </template>
@@ -110,12 +110,12 @@
       overflow: hidden
       .image
         width: 100%
-      .loading
-        position: absolute
-        width: 100%
-        top: 50%
-        transform: translateY(-50%)
 
+    .loading
+      position: absolute
+      width: 100%
+      top: 50%
+      transform: translateY(-50%)
     .toTop
       position: fixed
       top: 90px
