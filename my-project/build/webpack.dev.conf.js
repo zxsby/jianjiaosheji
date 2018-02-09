@@ -243,7 +243,46 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       // 获取热门搜索数据
       app.get('/api/hot', (req, res) => {
         let hotUrl = 'https://mobile-api.wowdsgn.com/v1/product/search/hot-keywords'
+        let saixuan = 'https://mobile-api.wowdsgn.com/v1/product/filter-conditions'
+        let output = {}
         axios.get(hotUrl, {
+          headers: {
+            Connection: 'Keep-Alive',
+            Host: 'mobile-api.wowdsgn.com'
+          }
+        }).then((result) => {
+          output.data = result.data
+          axios.get(saixuan, {
+            headers: {
+              Connection: 'Keep-Alive',
+              Host: 'mobile-api.wowdsgn.com'
+            }
+          }).then((result) => {
+            output.data1 = result.data
+            res.json(output)
+          }).catch((err) => {
+            console.log(err)
+          })
+
+        }).catch((err) => {
+          console.log(err)
+        })
+      })
+      // 获取搜索数据
+      app.get('/api/search', (req, res) => {
+        let str = ''
+        console.log(req.query)
+        if (req.query.colorIds.length) {
+          str += `,%22colorIds%22:[${req.query.colorIds}]`
+        }
+        if (req.query.sceneIds.length) {
+          str += `,%22sceneIds%22:[${req.query.sceneIds}]`
+        }
+        if (req.query.styleIds.length) {
+          str += `,%22styleIds%22:[${req.query.styleIds}]`
+        }
+        let searchUrl = `https://mobile-api.wowdsgn.com/v1/product/search?paramJson={%22order%22:${encodeURI(req.query.order)},%22keyword%22:${encodeURI(req.query.txt)},%22pageSize%22:30,%22currentPage%22:${req.query.currentPage},%22sort%22:${encodeURI(req.query.sort)}${str}}`
+        axios.get(searchUrl, {
           headers: {
             Connection: 'Keep-Alive',
             Host: 'mobile-api.wowdsgn.com'
@@ -254,12 +293,79 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log(err)
         })
       })
-      // 获取搜索数据
-      app.get('/api/search', (req, res) => {
-        // let searchUrl = `https://mobile-api.wowdsgn.com/v1/product/search?paramJson={%22order%22:%22asc%22,%22keyword%22:${req.query.txt},%22pageSize%22:30,%22currentPage%22:${req.query.currentPage},%22sort%22:%22onShelfTime%22}`
-        let searchUrl = `https://mobile-api.wowdsgn.com/v1/product/search?paramJson={%22order%22:${encodeURI(req.query.order)},%22keyword%22:${encodeURI(req.query.txt)},%22pageSize%22:30,%22currentPage%22:${req.query.currentPage},%22sort%22:${encodeURI(req.query.sort)}}`
-        console.log(searchUrl)
+      // 获取为你推荐数据
+      app.get('/api/productList', (req, res) => {
+        let searchUrl = `https://mobile-api.wowdsgn.com/v1/cart/recommend-products?paramJson={%22currentPage%22:10,%22pageSize%22:10}`
         axios.get(searchUrl, {
+          headers: {
+            Connection: 'Keep-Alive',
+            Host: 'mobile-api.wowdsgn.com'
+          }
+        }).then((result) => {
+          res.json(result.data)
+        }).catch((err) => {
+          console.log(err)
+        })
+      })
+      // 获取分类下的品类数据
+      app.get('/api/sort/category', (req, res) => {
+        let url = `https://mobile-api.wowdsgn.com/v2/page?paramJson={%22region%22:1,%22pageId%22:5}`
+        axios.get(url, {
+          headers: {
+            Connection: 'Keep-Alive',
+            Host: 'mobile-api.wowdsgn.com'
+          }
+        }).then((result) => {
+          res.json(result.data)
+        }).catch((err) => {
+          console.log(err)
+        })
+      })
+      //  获取分类下的品类下的详细数据-头部
+      app.get('/api/scot/categoryDetail', (req, res) => {
+        console.log(req.query.id, typeof(req.query.id))
+        let fenLeiUrl = `https://mobile-api.wowdsgn.com/v1/product/category?paramJson={%22id%22:${parseInt(req.query.id)},%22parts%22:[%22category%22]}`
+        let fenLeiUrl1 = `https://mobile-api.wowdsgn.com/v1/product/scene?paramJson={%22id%22:1,%22parts%22:[%22category%22]}`
+        console.log(fenLeiUrl)
+        axios.get(fenLeiUrl, {
+          headers: {
+            Connection: 'Keep-Alive',
+            Host: 'mobile-api.wowdsgn.com'
+          }
+        }).then((result) => {
+          res.json(result.data.data)
+        }).catch((err) => {
+          console.log(err)
+        })
+      })
+      //  获取分类下的品类下的详细数据-主体
+      app.get('/api/sort/categoryDetailBody', (req, res) => {
+        let str = ''
+        if (req.query.colorIds.length) {
+          str += `,%22colorIds%22:[${req.query.colorIds}]`
+        }
+        if (req.query.sceneIds.length) {
+          str += `,%22sceneIds%22:[${req.query.sceneIds}]`
+        }
+        if (req.query.styleIds.length) {
+          str += `,%22styleIds%22:[${req.query.styleIds}]`
+        }
+        let url = `https://mobile-api.wowdsgn.com/v1/product/category/products?paramJson={%22order%22:%22${req.query.order}%22,%22id%22:${parseInt(req.query.id)},%22pageSize%22:10,%22currentPage%22:${req.query.currentPage},%22sort%22:%22${req.query.sort}%22${str}}`
+        axios.get(url, {
+          headers: {
+            Connection: 'Keep-Alive',
+            Host: 'mobile-api.wowdsgn.com'
+          }
+        }).then((result) => {
+          res.json(result.data)
+        }).catch((err) => {
+          console.log(err)
+        })
+      })
+      // 获取筛选数据
+      app.get('/api/saixuan', (req, res) => {
+        let saixuan = 'https://mobile-api.wowdsgn.com/v1/product/filter-conditions'
+        axios.get(saixuan, {
           headers: {
             Connection: 'Keep-Alive',
             Host: 'mobile-api.wowdsgn.com'

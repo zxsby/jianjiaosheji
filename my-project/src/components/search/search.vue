@@ -1,55 +1,60 @@
 <template>
-  <div class="searchPage">
-    <toTop top="110px" @scrolltoTop="scrollTOTOP" ref="totop"></toTop>
-    <div class="search-header">
-      <div class="icon"><i class="iconfont icon-sousuo"></i></div>
-      <div class="search-box">
-        <input @keyup.enter="submitSearch" v-model="searchValue" placeholder="商品名、品牌、设计师、分类" class="put" type="text">
-        <p @click="clearSearch" class="clear-search-box">x</p>
+  <transition name="slide">
+    <div class="searchPage">
+      <toTop top="110px" @scrolltoTop="scrollTOTOP" ref="totop"></toTop>
+      <div class="search-header">
+        <div class="icon"><i class="iconfont icon-sousuo"></i></div>
+        <div class="search-box">
+          <input @keyup.enter="submitSearch" v-model="searchValue" placeholder="商品名、品牌、设计师、分类" class="put" type="text">
+          <p @click="clearSearch" class="clear-search-box">x</p>
+        </div>
+        <div @click="goToBack" class="search-back">
+          <span>取消</span>
+        </div>
       </div>
-      <div class="search-back">
-        <span>取消</span>
+      <div v-show="!searchList && hotArr.length" class="search-hot">
+        <h1 class="hot-title">热门搜索</h1>
+        <span @click="hotClick(item)" class="hot-text" v-for="item in hotArr">{{item}}</span>
       </div>
-    </div>
-    <div v-show="!searchList && hotArr.length" class="search-hot">
-      <h1 class="hot-title">热门搜索</h1>
-      <span @click="hotClick(item)" class="hot-text" v-for="item in hotArr">{{item}}</span>
-    </div>
-    <div v-show="!searchList && getSearchHistory.length" class="history-content">
-      <p class="history-title">历史搜索
-        <img class="clear-all-history" width="14" height="14" src="./cleanSearch.png" alt="">
-      </p>
-      <span @click="hotClick(item)" class="hot-text" v-for="item in getSearchHistory">{{item}}
+      <div v-show="!searchList && getSearchHistory.length" class="history-content">
+        <p class="history-title">历史搜索
+          <img @click="clearAllSearch" class="clear-all-history" width="15" height="15" src="./cleanSearch.png" alt="">
+        </p>
+        <span @click="hotClick(item)" class="hot-text" v-for="item in getSearchHistory">{{item}}
         <span @click.stop="detailOne(item)" class="clear-one">X</span>
       </span>
-    </div>
-    <div class="search-list" v-show="searchList">
-      <div class="list-header">
-        <div class="header-text" @click="activeTimeSort" :class="{'active': active === 1}">上新</div>
-        <div class="header-text" @click="activeCountSort" :class="{'active': active === 2}">销量</div>
-        <div class="header-text" @click="activePriceSort" :class="{'active': active === 3}">价格
-          <div class="sort-content">
-            <img class="sort" :class="{'sort-active' : sortActive}" src="./up.png" alt="">
-            <img class="sort" :class="{'sort-active' : !sortActive}" src="./down.png" alt="">
+      </div>
+      <div class="search-list" v-show="searchList">
+        <div class="list-header">
+          <div class="header-text" @click="activeTimeSort" :class="{'active': active === 1}">上新</div>
+          <div class="header-text" @click="activeCountSort" :class="{'active': active === 2}">销量</div>
+          <div class="header-text" @click="activePriceSort" :class="{'active': active === 3}">价格
+            <div class="sort-content">
+              <img class="sort" :class="{'sort-active' : sortActive}" src="./up.png" alt="">
+              <img class="sort" :class="{'sort-active' : !sortActive}" src="./down.png" alt="">
+            </div>
           </div>
         </div>
       </div>
+      <Scroll @scroll="scroll" v-show="searchList" @scrollToEnd="scrollToEnd" v-if="productLists.data" :pullup="true"
+              :interactive="true" class="main-content" :probeType="2"
+              :listenScroll="true" :data="productLists" ref="scroll">
+        <productList @imageLoad="imageLoad" v-show="productLists.data.products.length > 0" :showMore="showMore"
+                     :productLists="productLists"></productList>
+        <div v-show="productLists.data.products.length === 0" class="no-search">
+          没有匹配数据
+        </div>
+      </Scroll>
+      <div v-show="searchList" @click="showScreen" class="screen">!!!</div>
+      <Screen @subScreen="subScreen" ref="screen" :screen="screen"></Screen>
     </div>
-    <Scroll @scroll="scroll" v-show="searchList" @scrollToEnd="scrollToEnd" v-if="productLists.data" :pullup="true"
-            :interactive="true" class="main-content" :probeType="2"
-            :listenScroll="true" :data="productLists" ref="scroll">
-      <productList @imageLoad="imageLoad" v-show="productLists.data.products.length > 0" :showMore="showMore"
-                   :productLists="productLists"></productList>
-      <div v-show="productLists.data.products.length === 0" class="no-search">
-        没有匹配数据
-      </div>
-    </Scroll>
-  </div>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">
   import {mapGetters, mapActions} from 'vuex'
   import productList from '../../base/productList/productList.vue'
+  import Screen from '../../base/screen/screen.vue'
   import toTop from '../../base/toTop/toTop.vue'
   import Scroll from '../../base/scroll/scroll.vue'
   import {loadImage} from '../../common/js/mixin'
@@ -65,8 +70,12 @@
         active: 1,   //  list-header选中状态
         sortActive: true,  // 排序
         showMore: true,
-        order: 'asc',
-        sort: 'onShelfTime'
+        screen: {}, // 筛选数据
+        order: 'asc', // 升降续
+        sort: 'onShelfTime', //  排序类型
+        colorIds: [],   //  颜色筛选
+        sceneIds: [],   //  场景的筛选
+        styleIds: []   //  风格的筛选
       }
     },
     computed: {
@@ -81,8 +90,9 @@
       //  获取热门搜索数据
       _getHot () {
         this.$http.get('./api/hot').then((result) => {
-          if (result.data.resCode === ERR_OK) {
-            this.hotArr = result.data.data.keywords
+          if (result.data.data.resCode === ERR_OK) {
+            this.hotArr = result.data.data.data.keywords
+            this.screen = result.data.data1.data
           }
         }).catch((err) => {
           console.log(err)
@@ -107,7 +117,10 @@
             txt: `"${this.searchValue}"`,
             currentPage: 1,
             order: `"${this.order}"`,
-            sort: `"${this.sort}"`
+            sort: `"${this.sort}"`,
+            colorIds: this.colorIds.toString(),
+            sceneIds: this.sceneIds.toString(),
+            styleIds: this.styleIds.toString()
           }
         }).then((result) => {
           this.productLists = result.data
@@ -163,7 +176,10 @@
               txt: `"${this.searchValue}"`,
               currentPage: this.productLists.data.currentPage + 1,
               order: `"${this.order}"`,
-              sort: `"${this.sort}"`
+              sort: `"${this.sort}"`,
+              colorIds: this.colorIds,
+              sceneIds: this.sceneIds,
+              styleIds: this.styleIds
             }
           }).then((result) => {
             if (result.data.resCode === ERR_OK) {
@@ -187,9 +203,29 @@
         this.searchValue = ''
         this.searchList = false
       },
+      //  清空所有搜索历史记录
+      clearAllSearch () {
+        this.clearAllSearchHistory()
+      },
+      //  返回上一页
+      goToBack () {
+        this.$router.back(-1)
+      },
+      // 显示筛选
+      showScreen () {
+        this.$refs.screen.show()
+      },
+      //  获取提交筛选信息
+      subScreen (colorIds, sceneIds, styleIds) {
+        this.styleIds = styleIds
+        this.colorIds = colorIds
+        this.sceneIds = sceneIds
+        this.submitSearch()
+      },
       ...mapActions([
         'joinSearchHistory',
-        'detailOneSearchHistory'
+        'detailOneSearchHistory',
+        'clearAllSearchHistory'
       ])
     },
     watch: {
@@ -203,7 +239,8 @@
     components: {
       productList,
       Scroll,
-      toTop
+      toTop,
+      Screen
     }
   }
 </script>
@@ -211,6 +248,10 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
   .searchPage
+    &.slide-enter-active, &.slide-leave-active
+      transition: all 0.3s
+    &.slide-enter, &.slide-leave-to
+      transform: translate3d(100%, 0, 0)
     .search-header
       height: 50px
       line-height: 50px
@@ -321,4 +362,17 @@
       right: 0
       bottom: 0
       overflow: hidden
+    .screen
+      position: fixed
+      right: 40px
+      bottom: 50px
+      width: 40px
+      height: 40px
+      border-radius: 50%
+      background: #a09e9e
+      font-size: 22px
+      line-height: 38px
+      text-align: center
+      font-weight: 700
+      transform: rotate(90deg)
 </style>

@@ -1,5 +1,5 @@
 import * as types from './mutations-types'
-import {joinCart, joinProductCollect, changeCartList, cartDetail, joinSearch, detailOneSearch} from '../common/js/catch'
+import {joinCart, joinProductCollect, changeCartList, cartDetail, joinSearch, detailOneSearch, detailAllSearch} from '../common/js/catch'
 
 // 加入购物车
 export const joinToCart = function ({commit}, productDetail) {
@@ -31,4 +31,10 @@ export const joinSearchHistory = function ({commit}, historyText) {
 
 export const detailOneSearchHistory = function ({commit}, historyText) {
   commit(types.SET_SEARCH_HISTORY, detailOneSearch(historyText))
+}
+
+// 清空搜索历史记录
+
+export const clearAllSearchHistory = function ({commit}) {
+  commit(types.SET_SEARCH_HISTORY, detailAllSearch())
 }

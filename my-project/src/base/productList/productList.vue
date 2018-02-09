@@ -1,27 +1,29 @@
 <template>
-  <div v-if="productLists.data" class="productGroupList-wrapper">
-    <div @click="goToDetail(item.productId)" class="productGroupList-detail"
-         v-for="(item, index) in productLists.data.products"
-         :class="{'right' : (index+1) % 2 === 0}">
-      <div class="join-detail-hart">
-        <i @click.stop="joinProductCollect(item)"
-           :class="checkedProductCollect(item)" class="heart">♡</i>
+  <transition name="slide">
+    <div v-if="productLists.data" class="productGroupList-wrapper">
+      <div @click="goToDetail(item.productId)" class="productGroupList-detail"
+           v-for="(item, index) in productLists.data.products"
+           :class="{'right' : (index+1) % 2 === 0}">
+        <div class="join-detail-hart">
+          <i @click.stop="joinProductCollect(item)"
+             :class="checkedProductCollect(item)" class="heart">♡</i>
+        </div>
+        <img @load="imageLoad" class="image" v-lazy="item.productImg" alt="">
+        <p class="discount" :class="{'otherDiscount': item.signs[0].id===4 ? true : false}" v-if="item.signs">
+          <span>{{item.signs[0].desc}}<i v-if="item.signs[0].id===2">折</i></span>
+        </p>
+        <p class="noDiscount" v-if="!item.signs"></p>
+        <p class="name">{{item.productTitle}}</p>
+        <p class="price">￥{{item.sellPrice | money}}<span
+          v-if="item.sellPrice !== item.originalPrice">￥{{item.originalPrice | money}}</span></p>
+        <p class="list-title">{{item.prizeOrSlogan}}</p>
       </div>
-      <img @load="imageLoad" class="image" v-lazy="item.productImg" alt="">
-      <p class="discount" :class="{'otherDiscount': item.signs[0].id===4 ? true : false}" v-if="item.signs">
-        <span>{{item.signs[0].desc}}<i v-if="item.signs[0].id===2">折</i></span>
-      </p>
-      <p class="noDiscount" v-if="!item.signs"></p>
-      <p class="name">{{item.productTitle}}</p>
-      <p class="price">￥{{item.sellPrice | money}}<span
-        v-if="item.sellPrice !== item.originalPrice">￥{{item.originalPrice | money}}</span></p>
-      <p class="list-title">{{item.prizeOrSlogan}}</p>
+      <div v-show="showMore" class="productGroupList-loading">
+        <Loading></Loading>
+      </div>
+      <div class="productGroupList-no" v-show="!showMore">没有更多了</div>
     </div>
-    <div v-show="showMore" class="productGroupList-loading">
-      <Loading></Loading>
-    </div>
-    <div class="productGroupList-no" v-show="!showMore">没有更多了</div>
-  </div>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">
@@ -56,6 +58,10 @@
   .productGroupList-wrapper
     width: 100%
     border-bottom: 1px solid #F5F5F5
+    &.slide-enter-active, &.slide-leave-active
+      transition: all 0.3s
+    &.slide-enter, &.slide-leave-to
+      transform: translate3d(100%, 0, 0)
     .productGroupList-loading
       height: 50px
       position: relative

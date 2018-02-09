@@ -118,7 +118,14 @@ export function detailOneSearch(historyText) {
   stroage.set(SEARCH_KEY, searches)
   return searches
 }
-
+// 获取stroage中的搜索历史记录
 export function loadSearchHistory() {
   return stroage.get(SEARCH_KEY, [])
+}
+
+//  清空所有搜素历史记录
+
+export function detailAllSearch() {
+  stroage.set(SEARCH_KEY, [])
+  return []
 }

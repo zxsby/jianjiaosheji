@@ -34,6 +34,8 @@
           </div>
         </div>
         <split></split>
+        <div>— 为你推荐—</div>
+        <productList :productLists="productList" :showMore="productLoading"></productList>
       </div>
     </scroll>
     <div class="cart-footer">
@@ -56,13 +58,20 @@
   import {getCartList, loadImage, computedPrice} from '../../common/js/mixin'
   import split from '../../base/split/split.vue'
   import scroll from '../../base/scroll/scroll.vue'
+  import productList from '../../base/productList/productList.vue'
   export default {
     mixins: [getCartList, loadImage, computedPrice],
     data () {
       return {
         check: [],
-        detail: false
+        detail: false, // 删除按钮
+        currentPage: 1,  //  当前推荐页数
+        productLoading: true, // 加载更多显示
+        productList: {}  //  为你推荐数据
       }
+    },
+    created () {
+      this.getProductList()
     },
     mounted () {
       for (let i = 0; i < this.getCart.length; i++) {
@@ -130,19 +139,40 @@
       },
       // 删除选中的商品
       detailChecked () {
-        let detailIndex = []
-        for (let index in this.check) {
-          if (this.check[index]) {
-            detailIndex.push(this.getCart[index].detail.productId)
-            this.check.splice(index, 1)
+        if (this.detail) {
+          let detailIndex = []
+          for (let index in this.check) {
+            if (this.check[index]) {
+              detailIndex.push(this.getCart[index].detail.productId)
+              this.check.splice(index, 1)
+            }
           }
+          this.detailCartItem(detailIndex)
         }
-        this.detailCartItem(detailIndex)
+      },
+      // 获取为你推荐信息
+      getProductList () {
+        this.$http.get('./api/productList', {
+          params: {
+            currentPage: this.currentPage++
+          }
+        }).then((result) => {
+          console.log(result)
+          if (this.currentPage === 1) {
+            this.productList = result.data
+          } else {
+            this.productList.data.products = this.productList.data.products.concat(result.data.products)
+          }
+          console.log(result)
+        }).catch((err) => {
+          console.log(err)
+        })
       }
     },
     components: {
       split,
-      scroll
+      scroll,
+      productList
     }
   }
 </script>

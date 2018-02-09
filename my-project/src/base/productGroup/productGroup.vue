@@ -4,7 +4,7 @@
       <toTop @scrolltoTop="scrollTOTOP" ref="totop" top="45px"></toTop>
       <div class="back">
         <p class="goToBack" @click="goToBack"><</p>
-        <p class="iconfont icon-gouwuche">
+        <p @click="goToCart" class="iconfont icon-gouwuche">
           <i class="count-num" v-show="getCart.length > 0">{{getCart.length}}</i>
         </p>
       </div>
@@ -116,6 +116,9 @@
       //  返回上一页
       goToBack () {
         this.$router.back(-1)
+      },
+      goToCart () {
+        this.$router.push('/cart')
       }
     },
     components: {

@@ -15,6 +15,10 @@ import toPic from '../base/toPic/toPic.vue'
 import productDetails from '../base/productDetails/productDetails.vue'
 import shoppingCart from '../components/shoppingCart/shoppingCart.vue'
 import search from '../components/search/search.vue'
+import sortBrand from '../components/sort/brand/brand.vue'
+import sortCategory from '../components/sort/category/category.vue'
+import sortStylist from '../components/sort/stylist/stylist.vue'
+import categoryDetail from '../components/sort/category/categoryDetail/categoryDetail.vue'
 
 Vue.use(Router)
 
@@ -50,7 +54,22 @@ export default new Router({
         },
         {
           path: 'sort',
-          component: sort
+          component: sort,
+          redirect: '/sort/category',
+          children: [
+            {
+              path: 'category',
+              component: sortCategory
+            },
+            {
+              path: 'brand',
+              component: sortBrand
+            },
+            {
+              path: 'stylist',
+              component: sortStylist
+            }
+          ]
         },
         {
           path: 'inspiration',
@@ -88,6 +107,11 @@ export default new Router({
     {
       path: '/search',
       component: search
+    },
+    {
+      path: '/categoryDetail/:id',
+      component: categoryDetail,
+      props: true
     }
   ]
 })
